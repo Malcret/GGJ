@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{54EA8362-B762-4C65-AC4D-E445433AFFEF}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "GGJ",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	]
+}
