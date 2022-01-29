@@ -26,10 +26,8 @@ void AGGJ_InteractableBase::OnInteract_Implementation(AActor *Caller)
 
 void AGGJ_InteractableBase::StartFocus_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("Start Focus"));
 }
 
 void AGGJ_InteractableBase::EndFocus_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Orange, TEXT("End Focus"));
 }

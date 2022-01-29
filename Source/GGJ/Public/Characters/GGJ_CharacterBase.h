@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "GGJ_CharacterBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUsePowerSignature, const float, ManaCost);
+
 UCLASS()
 class GGJ_API AGGJ_CharacterBase : public ACharacter
 {
@@ -24,6 +26,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player")
 	class UStaticMeshComponent *MeshComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Charateristics")
+	class UGGJ_HealthComponent *HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Charateristics")
+	class UGGJ_ManaComponent *ManaComponent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUsePowerSignature OnUsePower;
+
 protected:
 
 	// Camera movements rates
@@ -38,8 +49,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	bool DebugTrace;
 
-	UPROPERTY(EditAnywhere, Category = "Impulsion")
-	float ImpulseForce;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	float DefaultPushForce;
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentPushForce;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	float DefaultPullForce;
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentPullForce;
 
 	// Character movements
 	void MoveForward(float value);
@@ -58,10 +76,15 @@ protected:
 	void TraceForward_Implementation();
 
 	void FirePressed();
+	void SecondaryFirePressed();
 
 	UFUNCTION(BlueprintNativeEvent)
-	void FireForward();
-	void FireForward_Implementation();
+	void PushPower();
+	void PushPower_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void PullPower();
+	void PullPower_Implementation();
 
 	// Called on overlapping
 	UFUNCTION()
@@ -81,4 +104,6 @@ public:
 private:
 
 	AActor *FocusActor;
+
+	void UseImpulse(const int8 Modificator, const float Force);
 };

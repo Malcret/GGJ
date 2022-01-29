@@ -11,7 +11,7 @@ UGGJ_HealthComponent::UGGJ_HealthComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-		DefaultHealth = 100.0f;
+	DefaultHealth = 100.0f;
 	CurrentHealth = DefaultHealth;
 }
 

@@ -8,6 +8,7 @@
 #include "GameFramework/Controller.h"
 #include "DrawDebugHelpers.h"
 #include "Interact/GGJ_InteractInterface.h"
+#include "Components/ActorComponent.h"
 
 // Sets default values
 AGGJ_CharacterBase::AGGJ_CharacterBase()
@@ -27,6 +28,12 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
 
+	HealthComponent = CreateDefaultSubobject<UGGJ_HealthComponent>(TEXT("HealthComponent"));
+	AddOwnedComponent(HealthComponent);
+
+	ManaComponent = CreateDefaultSubobject<UGGJ_ManaComponent>(TEXT("ManaComponent"));
+	AddOwnedComponent(ManaComponent);
+
 	// Default camera movements rates
 	BaseTurnRate = 45.0f;
 	BaseLookUpAtRate = 45.0f;
@@ -35,6 +42,13 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	TraceDistance = 2000.0f;
 	// Default debug status
 	DebugTrace = false;
+
+	// Default power force
+	DefaultPushForce = 500.0f;
+	DefaultPullForce = 500.0f;
+	// Current power force
+	CurrentPushForce = DefaultPushForce;
+	CurrentPullForce = DefaultPullForce;
 }
 
 void AGGJ_CharacterBase::MoveForward(float value)
@@ -45,7 +59,6 @@ void AGGJ_CharacterBase::MoveForward(float value)
 		const FVector direction = FRotationMatrix(yaw_rotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(direction, value);
 	}
-	
 }
 
 void AGGJ_CharacterBase::MoveRight(float value)
@@ -143,32 +156,29 @@ void AGGJ_CharacterBase::TraceForward_Implementation()
 
 void AGGJ_CharacterBase::FirePressed()
 {
-	FireForward();
+	PushPower();
 }
 
-void AGGJ_CharacterBase::FireForward_Implementation()
+void AGGJ_CharacterBase::SecondaryFirePressed()
 {
-	FVector location;
-	FRotator rotation;
-	FHitResult hit;
+	PullPower();
+}
 
-	GetController()->GetPlayerViewPoint(location, rotation);
-
-	const FVector start = location;
-	const FVector end = start + (rotation.Vector() * TraceDistance);
-
-	const FCollisionQueryParams trace_params;
-	if (GetWorld()->LineTraceSingleByChannel(hit, start, end, ECC_Visibility, trace_params))
+void AGGJ_CharacterBase::PushPower_Implementation()
+{
+	UseImpulse(1, CurrentPushForce);
+	if(OnUsePower.IsBound())
 	{
-		if (hit.GetActor()->IsRootComponentMovable())
-		{
-			UStaticMeshComponent *mesh_comp = Cast<UStaticMeshComponent>(hit.GetActor()->GetRootComponent());
-			if (mesh_comp)
-			{
-				const FVector camera_forward = CameraComponent->GetForwardVector();
-				mesh_comp->AddImpulse(camera_forward * ImpulseForce * mesh_comp->GetMass());
-			}
-		}
+		OnUsePower.Broadcast(-10.0f);
+	}
+}
+
+void AGGJ_CharacterBase::PullPower_Implementation()
+{
+	UseImpulse(-1, CurrentPullForce);
+	if(OnUsePower.IsBound())
+	{
+		OnUsePower.Broadcast(-10.0f);
 	}
 }
 
@@ -212,4 +222,31 @@ void AGGJ_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGGJ_CharacterBase::InteractPressed);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGGJ_CharacterBase::FirePressed);
+	PlayerInputComponent->BindAction("SecondaryFire", IE_Pressed, this, &AGGJ_CharacterBase::SecondaryFirePressed);
+}
+
+void AGGJ_CharacterBase::UseImpulse(const int8 Modificator, const float Force)
+{
+	FVector location;
+	FRotator rotation;
+	FHitResult hit;
+
+	GetController()->GetPlayerViewPoint(location, rotation);
+
+	const FVector start = location;
+	const FVector end = start + (rotation.Vector() * TraceDistance);
+
+	const FCollisionQueryParams trace_params;
+	if (GetWorld()->LineTraceSingleByChannel(hit, start, end, ECC_Visibility, trace_params))
+	{
+		if (hit.GetActor()->IsRootComponentMovable())
+		{
+			UStaticMeshComponent *mesh_comp = Cast<UStaticMeshComponent>(hit.GetActor()->GetRootComponent());
+			if (mesh_comp)
+			{
+				const FVector camera_forward = CameraComponent->GetForwardVector();
+				mesh_comp->AddImpulse(Modificator * camera_forward * Force * mesh_comp->GetMass());
+			}
+		}
+	}
 }
