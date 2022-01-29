@@ -26,9 +26,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mana")
 	float DefaultManaRegenRate;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mana")
 	float CurrentMana;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mana")
 	float CurrentManaRegenRate;
 
 	// Called when the game starts

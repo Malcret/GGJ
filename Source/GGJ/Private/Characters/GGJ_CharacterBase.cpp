@@ -175,7 +175,7 @@ void AGGJ_CharacterBase::PushPower_Implementation()
 	UseImpulse(1, CurrentPushForce);
 	if(OnUsePower.IsBound())
 	{
-		OnUsePower.Broadcast(-CurrentPushCost);
+		OnUsePower.Broadcast(CurrentPushCost);
 	}
 }
 
@@ -184,7 +184,7 @@ void AGGJ_CharacterBase::PullPower_Implementation()
 	UseImpulse(-1, CurrentPullForce);
 	if(OnUsePower.IsBound())
 	{
-		OnUsePower.Broadcast(-CurrentPullCost);
+		OnUsePower.Broadcast(CurrentPullCost);
 	}
 }
 
