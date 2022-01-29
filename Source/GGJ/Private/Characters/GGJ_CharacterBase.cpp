@@ -30,12 +30,12 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	MeshComponent->SetupAttachment(RootComponent);
 
 	// HealthComponent Initialization
-	HealthComponent = CreateDefaultSubobject<UGGJ_HealthComponent>(TEXT("HealthComponent"));
-	AddOwnedComponent(HealthComponent);
+	//HealthComponent = CreateDefaultSubobject<UGGJ_HealthComponent>(TEXT("HealthComponent"));
+	//AddOwnedComponent(HealthComponent);
 
 	// ManaComponent Initialization
-	ManaComponent = CreateDefaultSubobject<UGGJ_ManaComponent>(TEXT("ManaComponent"));
-	AddOwnedComponent(ManaComponent);
+	//ManaComponent = CreateDefaultSubobject<UGGJ_ManaComponent>(TEXT("ManaComponent"));
+	//AddOwnedComponent(ManaComponent);
 
 	// Camera
 	BaseTurnRate = 45.0f;
@@ -172,25 +172,19 @@ void AGGJ_CharacterBase::SecondaryFirePressed()
 
 void AGGJ_CharacterBase::PushPower_Implementation()
 {
-	if (ManaComponent->GetCurrentMana() >= CurrentPushCost)
+	UseImpulse(1, CurrentPushForce);
+	if(OnUsePower.IsBound())
 	{
-		UseImpulse(1, CurrentPushForce);
-		if(OnUsePower.IsBound())
-		{
-			OnUsePower.Broadcast(-CurrentPushCost);
-		}
+		OnUsePower.Broadcast(-CurrentPushCost);
 	}
 }
 
 void AGGJ_CharacterBase::PullPower_Implementation()
 {
-	if (ManaComponent->GetCurrentMana() >= CurrentPullCost)
+	UseImpulse(-1, CurrentPullForce);
+	if(OnUsePower.IsBound())
 	{
-		UseImpulse(-1, CurrentPullForce);
-		if(OnUsePower.IsBound())
-		{
-			OnUsePower.Broadcast(-CurrentPullCost);
-		}
+		OnUsePower.Broadcast(-CurrentPullCost);
 	}
 }
 

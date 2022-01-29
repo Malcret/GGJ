@@ -26,11 +26,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player")
 	class UStaticMeshComponent *MeshComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class UGGJ_HealthComponent *HealthComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	//class UGGJ_HealthComponent *HealthComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class UGGJ_ManaComponent *ManaComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	//class UGGJ_ManaComponent *ManaComponent;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnUsePowerSignature OnUsePower;

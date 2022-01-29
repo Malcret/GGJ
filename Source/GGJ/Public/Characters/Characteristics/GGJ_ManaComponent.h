@@ -16,9 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UGGJ_ManaComponent();
 
-	const float GetCurrentMana();
-
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Modification(const float Modificator);
 
 protected:

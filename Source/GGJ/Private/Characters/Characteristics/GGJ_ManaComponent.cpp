@@ -19,11 +19,6 @@ UGGJ_ManaComponent::UGGJ_ManaComponent()
 	CurrentManaRegenRate = DefaultManaRegenRate;
 }
 
-const float UGGJ_ManaComponent::GetCurrentMana()
-{
-	return CurrentMana;
-}
-
 void UGGJ_ManaComponent::Modification(const float Modificator)
 {
 	if (Modificator != 0.0f)

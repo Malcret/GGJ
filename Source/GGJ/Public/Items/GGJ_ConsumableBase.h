@@ -10,9 +10,7 @@ UENUM()
 enum class CONSUMABLE_TYPE : uint8
 {
 	HealthRestoration UMETA(DisplayName = "HealthRestoration"),
-	ManaRestoration UMETA(DisplayName = "ManaRestoration"),
-	HealthRegeneration UMETA(DisplayName = "HealthRegeneration"),
-	ManaRegeneration UMETA(DisplayName = "ManaRegeneration")
+	ManaRestoration UMETA(DisplayName = "ManaRestoration")
 };
 
 /**
@@ -35,7 +33,5 @@ protected:
 	float ConsumablePower;
 
 public:
-
-	virtual void OnInteract_Implementation(AActor *Caller);
 	
 };

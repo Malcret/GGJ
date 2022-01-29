@@ -16,7 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UGGJ_HealthComponent();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Modification(const float Modificator);
 
 protected:
