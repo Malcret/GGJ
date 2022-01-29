@@ -8,7 +8,8 @@
 #include "GameFramework/Controller.h"
 #include "DrawDebugHelpers.h"
 #include "Interact/GGJ_InteractInterface.h"
-#include "Components/ActorComponent.h"
+#include "Characters/Characteristics/GGJ_HealthComponent.h"
+#include "Characters/Characteristics/GGJ_ManaComponent.h"
 
 // Sets default values
 AGGJ_CharacterBase::AGGJ_CharacterBase()
