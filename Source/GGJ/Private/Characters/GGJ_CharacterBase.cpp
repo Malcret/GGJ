@@ -29,27 +29,33 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
 
+	// HealthComponent Initialization
 	HealthComponent = CreateDefaultSubobject<UGGJ_HealthComponent>(TEXT("HealthComponent"));
 	AddOwnedComponent(HealthComponent);
 
+	// ManaComponent Initialization
 	ManaComponent = CreateDefaultSubobject<UGGJ_ManaComponent>(TEXT("ManaComponent"));
 	AddOwnedComponent(ManaComponent);
 
-	// Default camera movements rates
+	// Camera
 	BaseTurnRate = 45.0f;
 	BaseLookUpAtRate = 45.0f;
 
-	// Default trace distance
+	// Line tracing
 	TraceDistance = 2000.0f;
-	// Default debug status
 	DebugTrace = false;
 
-	// Default power force
-	DefaultPushForce = 500.0f;
-	DefaultPullForce = 500.0f;
-	// Current power force
+	// Push power
+	DefaultPushForce = 1000.0f;
 	CurrentPushForce = DefaultPushForce;
+	DefaultPushCost = 10.0f;
+	CurrentPushCost = DefaultPushCost;
+
+	// Poll power
+	DefaultPullForce = 500.0f;
 	CurrentPullForce = DefaultPullForce;
+	DefaultPullCost = 10.0f;
+	CurrentPullCost = DefaultPullCost;
 }
 
 void AGGJ_CharacterBase::MoveForward(float value)
@@ -139,7 +145,6 @@ void AGGJ_CharacterBase::TraceForward_Implementation()
 	{
 		if (DebugTrace)
 		{
-			// Draw a colored line from the camera to the camera pointing location
 			DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 2.0f);
 		}
 
@@ -167,19 +172,25 @@ void AGGJ_CharacterBase::SecondaryFirePressed()
 
 void AGGJ_CharacterBase::PushPower_Implementation()
 {
-	UseImpulse(1, CurrentPushForce);
-	if(OnUsePower.IsBound())
+	if (ManaComponent->GetCurrentMana() >= CurrentPushCost)
 	{
-		OnUsePower.Broadcast(-10.0f);
+		UseImpulse(1, CurrentPushForce);
+		if(OnUsePower.IsBound())
+		{
+			OnUsePower.Broadcast(-CurrentPushCost);
+		}
 	}
 }
 
 void AGGJ_CharacterBase::PullPower_Implementation()
 {
-	UseImpulse(-1, CurrentPullForce);
-	if(OnUsePower.IsBound())
+	if (ManaComponent->GetCurrentMana() >= CurrentPullCost)
 	{
-		OnUsePower.Broadcast(-10.0f);
+		UseImpulse(-1, CurrentPullForce);
+		if(OnUsePower.IsBound())
+		{
+			OnUsePower.Broadcast(-CurrentPullCost);
+		}
 	}
 }
 

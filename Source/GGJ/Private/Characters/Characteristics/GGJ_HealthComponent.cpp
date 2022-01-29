@@ -15,6 +15,14 @@ UGGJ_HealthComponent::UGGJ_HealthComponent()
 	CurrentHealth = DefaultHealth;
 }
 
+void UGGJ_HealthComponent::Modification(const float Modificator)
+{
+	if (Modificator != 0.0f)
+	{
+		CurrentHealth = FMath::Clamp(CurrentHealth + Modificator, 0.0f, DefaultHealth);
+	}
+}
+
 void UGGJ_HealthComponent::TakeDamage(AActor *DamagedActor, float Damage, const class UDamageType *DamageType, class AController *InstigatedBy, AActor *DamagerCauser)
 {
 	if (Damage <= 0.0f)
@@ -23,7 +31,6 @@ void UGGJ_HealthComponent::TakeDamage(AActor *DamagedActor, float Damage, const 
 	}
 
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, DefaultHealth);
-	
 }
 
 // Called when the game starts

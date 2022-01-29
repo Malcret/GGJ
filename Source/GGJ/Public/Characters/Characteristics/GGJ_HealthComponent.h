@@ -16,6 +16,9 @@ public:
 	// Sets default values for this component's properties
 	UGGJ_HealthComponent();
 
+	UFUNCTION()
+	void Modification(const float Modificator);
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")

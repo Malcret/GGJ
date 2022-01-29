@@ -16,6 +16,11 @@ public:
 	// Sets default values for this component's properties
 	UGGJ_ManaComponent();
 
+	const float GetCurrentMana();
+
+	UFUNCTION()
+	void Modification(const float Modificator);
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mana")
@@ -27,9 +32,6 @@ protected:
 	float CurrentMana;
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentManaRegenRate;
-
-	UFUNCTION()
-	void ManaModificator(const float Modificator);
 
 	// Called when the game starts
 	virtual void BeginPlay() override;

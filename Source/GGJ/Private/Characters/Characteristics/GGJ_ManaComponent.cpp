@@ -19,9 +19,17 @@ UGGJ_ManaComponent::UGGJ_ManaComponent()
 	CurrentManaRegenRate = DefaultManaRegenRate;
 }
 
-void UGGJ_ManaComponent::ManaModificator(const float Modificator)
+const float UGGJ_ManaComponent::GetCurrentMana()
 {
-	CurrentMana = FMath::Clamp(CurrentMana + Modificator, 0.0f, DefaultMana);
+	return CurrentMana;
+}
+
+void UGGJ_ManaComponent::Modification(const float Modificator)
+{
+	if (Modificator != 0.0f)
+	{
+		CurrentMana = FMath::Clamp(CurrentMana + Modificator, 0.0f, DefaultMana);
+	}
 }
 
 
@@ -34,6 +42,6 @@ void UGGJ_ManaComponent::BeginPlay()
 	
 	if (owner)
 	{
-		owner->OnUsePower.AddDynamic(this, &UGGJ_ManaComponent::ManaModificator);
+		owner->OnUsePower.AddDynamic(this, &UGGJ_ManaComponent::Modification);
 	}
 }

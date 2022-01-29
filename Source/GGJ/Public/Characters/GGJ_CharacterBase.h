@@ -49,15 +49,25 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interaction")
 	bool DebugTrace;
 
+	// Push power
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
 	float DefaultPushForce;
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentPushForce;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	float DefaultPushCost;
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentPushCost;
 
+	// Pull power
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
 	float DefaultPullForce;
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentPullForce;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	float DefaultPullCost;
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentPullCost;
 
 	// Character movements
 	void MoveForward(float value);
