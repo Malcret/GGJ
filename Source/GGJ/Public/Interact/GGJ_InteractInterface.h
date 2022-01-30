@@ -7,6 +7,17 @@
 
 #include "GGJ_InteractInterface.generated.h"
 
+USTRUCT(BlueprintType)
+struct FScores {
+	GENERATED_BODY()
+	UPROPERTY()
+	int evilScore;
+	UPROPERTY()
+	int goodScore;
+	UPROPERTY()
+	int moyenne;
+};
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UGGJ_InteractInterface : public UInterface
