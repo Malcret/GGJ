@@ -8,6 +8,14 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUsePowerSignature, const float, ManaCost);
 
+UENUM()
+enum class CHARACTER_STATE : uint8
+{
+	Good UMETA(DisplayName = "Good"),
+	Neutral UMETA(DisplayName = "Neutral"),
+	Evil UMETA(DisplayName = "Evil")
+};
+
 UCLASS()
 class GGJ_API AGGJ_CharacterBase : public ACharacter
 {
@@ -69,6 +77,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentPullCost;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	CHARACTER_STATE CharacterState;
+
 	// Character movements
 	void MoveForward(float value);
 	void MoveRight(float value);
@@ -95,6 +106,10 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void PullPower();
 	void PullPower_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ChangeState(CHARACTER_STATE state);
+	void ChangeState_Implementation(CHARACTER_STATE state);
 
 	// Called on overlapping
 	UFUNCTION()

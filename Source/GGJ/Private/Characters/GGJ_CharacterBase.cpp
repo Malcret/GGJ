@@ -46,7 +46,7 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	DebugTrace = false;
 
 	// Push power
-	DefaultPushForce = 1000.0f;
+	DefaultPushForce = 700.0f;
 	CurrentPushForce = DefaultPushForce;
 	DefaultPushCost = 10.0f;
 	CurrentPushCost = DefaultPushCost;
@@ -56,6 +56,9 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	CurrentPullForce = DefaultPullForce;
 	DefaultPullCost = 10.0f;
 	CurrentPullCost = DefaultPullCost;
+
+	// State
+	CharacterState = CHARACTER_STATE::Neutral;
 }
 
 void AGGJ_CharacterBase::MoveForward(float value)
@@ -162,12 +165,23 @@ void AGGJ_CharacterBase::TraceForward_Implementation()
 
 void AGGJ_CharacterBase::FirePressed()
 {
-	PushPower();
+	if (CharacterState == CHARACTER_STATE::Good)
+	{
+		PullPower();
+	}
+	else
+	{
+		PushPower();
+	}
+	
 }
 
 void AGGJ_CharacterBase::SecondaryFirePressed()
 {
-	PullPower();
+	if (CharacterState == CHARACTER_STATE::Neutral)
+	{
+		PullPower();
+	}
 }
 
 void AGGJ_CharacterBase::PushPower_Implementation()
@@ -185,6 +199,39 @@ void AGGJ_CharacterBase::PullPower_Implementation()
 	if(OnUsePower.IsBound())
 	{
 		OnUsePower.Broadcast(CurrentPullCost);
+	}
+}
+
+void AGGJ_CharacterBase::ChangeState_Implementation(CHARACTER_STATE state)
+{
+	if (CharacterState != state)
+	{
+		if (state == CHARACTER_STATE::Good)
+		{
+			DefaultPullForce = 500.0f;
+			DefaultPullCost = 10.0f;
+			CurrentPullForce = DefaultPullForce;
+			CurrentPullCost = DefaultPullCost;
+		}
+		else if (state == CHARACTER_STATE::Neutral)
+		{
+			DefaultPullForce = 334.4f;
+			DefaultPullCost = 15.0f;
+			CurrentPullForce = DefaultPullForce;
+			CurrentPullCost = DefaultPullCost;
+			
+			DefaultPushForce = 500.0f;
+			DefaultPushCost = 15.0f;
+			CurrentPushForce = DefaultPushForce;
+			CurrentPushCost = DefaultPushCost;
+		}
+		else if (state == CHARACTER_STATE::Evil)
+		{
+			DefaultPushForce = 466.6f;
+			DefaultPushCost = 10.0f;
+			CurrentPushForce = DefaultPushForce;
+			CurrentPushCost = DefaultPushCost;
+		}
 	}
 }
 
