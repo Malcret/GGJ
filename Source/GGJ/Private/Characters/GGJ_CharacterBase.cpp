@@ -46,7 +46,7 @@ AGGJ_CharacterBase::AGGJ_CharacterBase()
 	DebugTrace = false;
 
 	// Push power
-	DefaultPushForce = 700.0f;
+	DefaultPushForce = 1000.0f;
 	CurrentPushForce = DefaultPushForce;
 	DefaultPushCost = 10.0f;
 	CurrentPushCost = DefaultPushCost;
@@ -212,6 +212,8 @@ void AGGJ_CharacterBase::ChangeState_Implementation(CHARACTER_STATE state)
 			DefaultPullCost = 10.0f;
 			CurrentPullForce = DefaultPullForce;
 			CurrentPullCost = DefaultPullCost;
+
+			CharacterState = state;
 		}
 		else if (state == CHARACTER_STATE::Neutral)
 		{
@@ -220,17 +222,21 @@ void AGGJ_CharacterBase::ChangeState_Implementation(CHARACTER_STATE state)
 			CurrentPullForce = DefaultPullForce;
 			CurrentPullCost = DefaultPullCost;
 			
-			DefaultPushForce = 500.0f;
+			DefaultPushForce = 666.6f;
 			DefaultPushCost = 15.0f;
 			CurrentPushForce = DefaultPushForce;
 			CurrentPushCost = DefaultPushCost;
+
+			CharacterState = state;
 		}
 		else if (state == CHARACTER_STATE::Evil)
 		{
-			DefaultPushForce = 466.6f;
+			DefaultPushForce = 1000.0f;
 			DefaultPushCost = 10.0f;
 			CurrentPushForce = DefaultPushForce;
 			CurrentPushCost = DefaultPushCost;
+
+			CharacterState = state;
 		}
 	}
 }

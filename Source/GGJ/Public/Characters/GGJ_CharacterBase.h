@@ -107,7 +107,7 @@ protected:
 	void PullPower();
 	void PullPower_Implementation();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChangeState(CHARACTER_STATE state);
 	void ChangeState_Implementation(CHARACTER_STATE state);
 
